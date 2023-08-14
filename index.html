@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - distortion</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<script id="fragmentShader" type="x-shader/x-fragment">
+            precision mediump float;
+
+            uniform float time;
+            uniform float mouseX;
+            uniform float mouseY;
+            uniform sampler2D texture;
+            varying vec2 vUv;
+
+            void main() {
+    float d = -distance(vec2(mouseX,mouseY), gl_FragCoord.xy);
+    float r = dot(gl_FragCoord.xy, vec2(0.005,0.005))/d;
+    vec2 tex = vec2(vUv.x + r, vUv.y + r);
+  	gl_FragColor = vec4(texture2D(texture, tex).rgb, 1.0);
+            }
+
+        </script>
+
+        <script id="vertexShader" type="x-shader/x-vertex">
+            precision mediump float;
+            varying vec2 vUv;
+            uniform float time;
+           void main() {
+                vUv  = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+           }
+        </script>
+        <div class="stage"></div>
+        <canvas class="noise-canvas"></canvas>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
